@@ -134,7 +134,7 @@ Class cRestDataset is a cBaseRestDataset
     End_Procedure
     
     { MethodType=Event }
-    Procedure OnHttpPost tWebApiCallContext ByRef webapicallcontext
+    Procedure OnHttpPost tWebApiCallContext ByRef webapicallcontext tRESTRequestBody[] argRequestBodyParts
         Handle hoDD hoRequestBody
         Handle[] hoExposedDataObjects
         String sRequestBodyString sFieldName sErrorMessage
@@ -146,8 +146,11 @@ Class cRestDataset is a cBaseRestDataset
         
         Get Main_DD to hoDD
         
-        //Parse the request body into key value pairs
-        Get ParseRequestBody of webapicallcontext.hoIterator to requestBodyParts
+        Move argRequestBodyParts to requestBodyParts
+        If ((SizeOfArray(requestBodyParts)) <= 0) Begin
+            //Parse the request body into key value pairs
+            Get ParseRequestBody of webapicallcontext.hoIterator to requestBodyParts
+        End
         
         //If we have no request body we should just generate a error response and stop the procedure
         If (SizeOfArray(requestBodyParts) = 0) Begin
@@ -217,7 +220,7 @@ Class cRestDataset is a cBaseRestDataset
     End_Procedure
     
     { MethodType=Event }
-    Procedure OnHttpPut tWebApiCallContext ByRef webapicallcontext String sID
+    Procedure OnHttpPut tWebApiCallContext ByRef webapicallcontext String sID tRESTRequestBody[] argRequestBodyParts
         Handle hoDD hoKeyChild
         Handle[] hoExposedDataObjects
         Integer iIndex iBodyIndex iDataObjectIndex iAmountOfDataObjects iAmountOfRequestFields iFindIndex
@@ -230,8 +233,11 @@ Class cRestDataset is a cBaseRestDataset
         
         Move False to bModified
         
-        //Parse the request body into a key value pair
-        Get ParseRequestBody of webapicallcontext.hoIterator to requestBodyParts
+        Move argRequestBodyParts to requestBodyParts
+        If ((SizeOfArray(requestBodyParts)) <= 0) Begin
+            //Parse the request body into key value pairs
+            Get ParseRequestBody of webapicallcontext.hoIterator to requestBodyParts
+        End
         Move (SizeOfArray(requestBodyParts)) to iAmountOfRequestFields
         
         If (SizeOfArray(requestBodyParts) = 0) Begin
@@ -322,7 +328,7 @@ Class cRestDataset is a cBaseRestDataset
     End_Procedure
 
     { MethodType=Event }
-    Procedure OnHttpPatch tWebApiCallContext ByRef webapicallcontext String sID
+    Procedure OnHttpPatch tWebApiCallContext ByRef webapicallcontext String sID tRESTRequestBody[] argRequestBodyParts
         Handle hoDD hoKeyChild
         Handle[] hoExposedDataObjects
         Integer iIndex iBodyIndex iDataObjectIndex iAmountOfDataObjects iAmountOfRequestFields iFindIndex
@@ -335,8 +341,11 @@ Class cRestDataset is a cBaseRestDataset
         
         Move False to bModified
         
-        //Parse the request body into a key value pair
-        Get ParseRequestBody of webapicallcontext.hoIterator to requestBodyParts
+        Move argRequestBodyParts to requestBodyParts
+        If ((SizeOfArray(requestBodyParts)) <= 0) Begin
+            //Parse the request body into key value pairs
+            Get ParseRequestBody of webapicallcontext.hoIterator to requestBodyParts
+        End
         Move (SizeOfArray(requestBodyParts)) to iAmountOfRequestFields
         
         //Only continue if we actually have a request body
@@ -538,6 +547,14 @@ Class cRestDataset is a cBaseRestDataset
                     Else If (Pos("(LT)", sQueryParam, 0) <> 0) Begin
                         Move "LT" to sFilterType
                         Move (Replace("(LT)", sQueryParam, "")) to sQueryParam
+                    End
+                    Else If (Pos("(contains)", sQueryParam, 0) <> 0) Begin
+                        Move "contains" to sFilterType
+                        Move (Replace("(contains)", sQueryParam, "")) to sQueryParam
+                    End
+                    Else If (Pos("(matches)", sQueryParam, 0) <> 0) Begin
+                        Move "matches" to sFilterType
+                        Move (Replace("(matches)", sQueryParam, "")) to sQueryParam
                     End
                     
                     //Add the constrain

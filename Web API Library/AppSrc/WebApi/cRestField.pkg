@@ -122,6 +122,12 @@ Class cRestField is a cObject
         Else If (sFilterType = "LE") Begin
             Vconstrain iFile iField LE sConstrain
         End
+        Else If (sFilterType = "contains") Begin
+            Vconstrain iFile iField contains sConstrain
+        End
+        Else If (sFilterType = "matches") Begin
+            Vconstrain iFile iField matches sConstrain
+        End
         Else Begin
             Vconstrain iFile iField EQ sConstrain
         End

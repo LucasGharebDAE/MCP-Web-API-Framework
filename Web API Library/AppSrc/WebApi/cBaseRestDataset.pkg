@@ -28,6 +28,12 @@ Class cBaseRestDataset is a cWebComponent
         Property Boolean pbAllowEdit True
         Property Boolean pbAllowDelete True
         
+        //these properties which endpoint operations are available for the mcp server.
+        Property Boolean pbMcpAllowRead True
+        Property Boolean pbMcpAllowCreate True
+        Property Boolean pbMcpAllowEdit True
+        Property Boolean pbMcpAllowDelete True
+        
         //These properties define which verbs are protected by the security.
         Property Boolean pbSecureRead True
         Property Boolean pbSecureCreate True
@@ -47,6 +53,7 @@ Class cBaseRestDataset is a cWebComponent
         Integer iSizeOfPathPieces
         String sID
         String[] asPathPieces
+        tRESTRequestBody[] requestBodyParts
         
         Move (StrSplitToArray(webapicallcontext.sPath, "/")) to asPathPieces
         Move (SizeOfArray(asPathPieces)-1) to iSizeOfPathPieces
@@ -73,16 +80,16 @@ Class cBaseRestDataset is a cWebComponent
                     Send OnHttpGetByID (&webapicallcontext) sID
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_POST)
-                    Send OnHttpPost (&webapicallcontext)
+                    Send OnHttpPost (&webapicallcontext) requestBodyParts
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_PUT)
-                    Send OnHttpPut (&webapicallcontext) sID
+                    Send OnHttpPut (&webapicallcontext) sID requestBodyParts
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_PATCH)
-                    Send OnHttpPatch (&webapicallcontext) sID
+                    Send OnHttpPatch (&webapicallcontext) sID requestBodyParts
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_DELETE)
-                    Send OnHttpDelete (&webapicallcontext) sID
+                    Send OnHttpDelete (&webapicallcontext) sID requestBodyParts
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_OPTIONS)
                     Send OnHttpOptions (&webapicallcontext)
