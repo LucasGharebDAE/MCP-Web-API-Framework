@@ -134,7 +134,7 @@ Class cRestDataset is a cBaseRestDataset
     End_Procedure
     
     { MethodType=Event }
-    Procedure OnHttpPost tWebApiCallContext ByRef webapicallcontext tRESTRequestBody[] argRequestBodyParts
+    Procedure OnHttpPost tWebApiCallContext ByRef webapicallcontext
         Handle hoDD hoRequestBody
         Handle[] hoExposedDataObjects
         String sRequestBodyString sFieldName sErrorMessage
@@ -146,9 +146,11 @@ Class cRestDataset is a cBaseRestDataset
         
         Get Main_DD to hoDD
         
-        Move argRequestBodyParts to requestBodyParts
-        If ((SizeOfArray(requestBodyParts)) <= 0) Begin
-            //Parse the request body into key value pairs
+        //Parse the request body into key value pairs
+        If ((SizeOfArray(webapicallcontext.requestBodyParts)) > 0) Begin
+            Move webapicallcontext.requestBodyParts to requestBodyParts
+        End
+        Else Begin
             Get ParseRequestBody of webapicallcontext.hoIterator to requestBodyParts
         End
         
@@ -220,7 +222,7 @@ Class cRestDataset is a cBaseRestDataset
     End_Procedure
     
     { MethodType=Event }
-    Procedure OnHttpPut tWebApiCallContext ByRef webapicallcontext String sID tRESTRequestBody[] argRequestBodyParts
+    Procedure OnHttpPut tWebApiCallContext ByRef webapicallcontext String sID
         Handle hoDD hoKeyChild
         Handle[] hoExposedDataObjects
         Integer iIndex iBodyIndex iDataObjectIndex iAmountOfDataObjects iAmountOfRequestFields iFindIndex
@@ -233,9 +235,11 @@ Class cRestDataset is a cBaseRestDataset
         
         Move False to bModified
         
-        Move argRequestBodyParts to requestBodyParts
-        If ((SizeOfArray(requestBodyParts)) <= 0) Begin
-            //Parse the request body into key value pairs
+        //Parse the request body into key value pairs
+        If ((SizeOfArray(webapicallcontext.requestBodyParts)) > 0) Begin
+            Move webapicallcontext.requestBodyParts to requestBodyParts
+        End
+        Else Begin
             Get ParseRequestBody of webapicallcontext.hoIterator to requestBodyParts
         End
         Move (SizeOfArray(requestBodyParts)) to iAmountOfRequestFields
@@ -328,7 +332,7 @@ Class cRestDataset is a cBaseRestDataset
     End_Procedure
 
     { MethodType=Event }
-    Procedure OnHttpPatch tWebApiCallContext ByRef webapicallcontext String sID tRESTRequestBody[] argRequestBodyParts
+    Procedure OnHttpPatch tWebApiCallContext ByRef webapicallcontext String sID
         Handle hoDD hoKeyChild
         Handle[] hoExposedDataObjects
         Integer iIndex iBodyIndex iDataObjectIndex iAmountOfDataObjects iAmountOfRequestFields iFindIndex
@@ -341,9 +345,11 @@ Class cRestDataset is a cBaseRestDataset
         
         Move False to bModified
         
-        Move argRequestBodyParts to requestBodyParts
-        If ((SizeOfArray(requestBodyParts)) <= 0) Begin
-            //Parse the request body into key value pairs
+        //Parse the request body into key value pairs
+        If ((SizeOfArray(webapicallcontext.requestBodyParts)) > 0) Begin
+            Move webapicallcontext.requestBodyParts to requestBodyParts
+        End
+        Else Begin
             Get ParseRequestBody of webapicallcontext.hoIterator to requestBodyParts
         End
         Move (SizeOfArray(requestBodyParts)) to iAmountOfRequestFields

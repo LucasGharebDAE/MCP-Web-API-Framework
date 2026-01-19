@@ -28,7 +28,7 @@ Class cBaseRestDataset is a cWebComponent
         Property Boolean pbAllowEdit True
         Property Boolean pbAllowDelete True
         
-        //these properties which endpoint operations are available for the mcp server.
+        //These properties define which endpoint operations are available for the mcp server.
         Property Boolean pbMcpAllowRead True
         Property Boolean pbMcpAllowCreate True
         Property Boolean pbMcpAllowEdit True
@@ -53,7 +53,6 @@ Class cBaseRestDataset is a cWebComponent
         Integer iSizeOfPathPieces
         String sID
         String[] asPathPieces
-        tRESTRequestBody[] requestBodyParts
         
         Move (StrSplitToArray(webapicallcontext.sPath, "/")) to asPathPieces
         Move (SizeOfArray(asPathPieces)-1) to iSizeOfPathPieces
@@ -80,16 +79,16 @@ Class cBaseRestDataset is a cWebComponent
                     Send OnHttpGetByID (&webapicallcontext) sID
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_POST)
-                    Send OnHttpPost (&webapicallcontext) requestBodyParts
+                    Send OnHttpPost (&webapicallcontext)
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_PUT)
-                    Send OnHttpPut (&webapicallcontext) sID requestBodyParts
+                    Send OnHttpPut (&webapicallcontext) sID
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_PATCH)
-                    Send OnHttpPatch (&webapicallcontext) sID requestBodyParts
+                    Send OnHttpPatch (&webapicallcontext) sID
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_DELETE)
-                    Send OnHttpDelete (&webapicallcontext) sID requestBodyParts
+                    Send OnHttpDelete (&webapicallcontext) sID
                     Case Break
                 Case (webapicallcontext.sVerb = C_WEBAPI_OPTIONS)
                     Send OnHttpOptions (&webapicallcontext)
