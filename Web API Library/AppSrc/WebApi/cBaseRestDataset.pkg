@@ -34,6 +34,9 @@ Class cBaseRestDataset is a cWebComponent
         Property Boolean pbMcpAllowEdit True
         Property Boolean pbMcpAllowDelete True
         
+        //Provides a description for the tool that gets generated for this endpoint.
+        Property String psMcpDescription "" 
+        
         //These properties define which verbs are protected by the security.
         Property Boolean pbSecureRead True
         Property Boolean pbSecureCreate True
